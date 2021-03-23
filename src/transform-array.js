@@ -7,32 +7,31 @@ module.exports = function transform(x) {
   let result = [];
   for (let i = 0; i < x.length; i++) {
     if (x[i] === '--double-next') {
-      if (x[i + 1] === undefined) {
-        
-      } else { 
       result.push(x[i + 1]);
-      }
     } else if (x[i] === '--double-prev') {
-      if (x[i - 1] === undefined) {
-        
-      } else if (result[result.length - 1] == x[i - 1]) {
-      result.push(x[i - 1]);
-      }
-    } else if (x[i] === '--discard-next') {
-      if (x[i + 1] === undefined) {
-        
-      } else { 
-      i += 2;
-      }
+      if (result[result.length - 1] == x[i - 1]) {
+      result.push(x[i - 1]); }
+      if (Number.isNaN(x[i - 1])) {
+      result.push(NaN);  
+    }
+    }  else if (x[i] === '--discard-next') {
+      i ++;
     } else if (x[i] === '--discard-prev') {
-      if (x[i - 1] === undefined) {
-        
-      } else if (result[result.length - 1] == x[i - 1]) {
+      if (result[result.length - 1] == x[i - 1] && x[i - 2] !== '--discard-next') {
       result.pop();
       }
+      if (Number.isNaN(x[i - 1])) {
+      result.pop(NaN);  
+    }
     } else {
       result.push(x[i]);
     }
   }
+  if (result[0] === undefined) {
+    result = result.slice(1);
+  };
+  if (result[result.length - 1] === undefined) {
+    result = result.slice(0, -1);
+  };
   return result;
 };
