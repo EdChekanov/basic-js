@@ -17,6 +17,7 @@ const chainMaker = {
   },
   removeLink(position) {
     if (position > this.chain.slice(0, -2).split('~~').length || position < 1 || position ===undefined) {
+      this.chain = '';
       throw new Error;
     }
     this.chain = this.chain.split('~~');
@@ -58,9 +59,13 @@ const chainMaker = {
   },
   finishChain() {
     if (this.chain[this.chain.length - 1] == '~') {
-    return this.chain.slice(0, -2);
+      let x = this.chain.slice(0, -2);
+      this.chain = '';
+      return x;
     } else {
-      return this.chain;
+      let x = this.chain;
+      this.chain = '';
+      return x;
     }
   }
 };
